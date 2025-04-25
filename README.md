@@ -11,6 +11,8 @@ cd store-rest-api
 
 ```bash
 npm install
+
+npm run seed
 ```
 
 3. Create a `.env` file in the root directory with the following variables
