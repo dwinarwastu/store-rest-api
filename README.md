@@ -17,7 +17,7 @@ npm install
 
 ```
 # DATABASE
-MONGO_URI = "mongodb://localhost:27017/nodejs_express"
+MONGO_URI = "mongodb://localhost:27017/node_express"
 
 # PORT
 PORT =
