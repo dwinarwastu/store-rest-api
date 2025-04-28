@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import softDeletePlugins from "../plugin/softDelete.js";
 
 const productSchema = new mongoose.Schema(
   {
@@ -28,6 +29,8 @@ const productSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+productSchema.plugin(softDeletePlugins)
 
 const Product = mongoose.model("Product", productSchema);
 

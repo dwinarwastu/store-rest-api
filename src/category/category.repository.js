@@ -22,5 +22,6 @@ export const updateCategoryRepository = async (id, data) => {
 };
 
 export const deleteCategoryRepository = async (id) => {
-  return await Category.findByIdAndDelete(id);
+  const category = await Category.findById(id);
+  return category.softDelete();
 };

@@ -27,7 +27,8 @@ export const updateProductRepository = async (id, data) => {
 };
 
 export const deleteProductRepository = async (id) => {
-  return await Product.findByIdAndDelete(id);
+  const product = await Product.findById(id);
+  return product.softDelete();
 };
 
 export const searchProductRepository = async (keyword) => {

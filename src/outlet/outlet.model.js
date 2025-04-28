@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import softDeletePlugins from "../plugin/softDelete.js";
 
 const outletSchema = new mongoose.Schema({
   name: {
@@ -7,6 +8,8 @@ const outletSchema = new mongoose.Schema({
   },
   location: String,
 });
+
+outletSchema.plugin(softDeletePlugins);
 
 const Outlet = mongoose.model("Outlet", outletSchema);
 

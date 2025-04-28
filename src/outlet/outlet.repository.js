@@ -21,6 +21,8 @@ export const updateOutletRepository = async (id, data) => {
 };
 
 export const deleteOutletRepository = async (id) => {
+  const outlet = await Outlet.findById(id);
+  return outlet.softDelete()
   return await Outlet.findByIdAndDelete(id);
 };
 
