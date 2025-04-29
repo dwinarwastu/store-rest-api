@@ -16,11 +16,11 @@ const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
 
-app.use("/api/products", ProductRouter);
-app.use("/api/categories", CategoryRouter);
-app.use("/api/auth", AuthRouter);
-app.use("/api/outlet", OutletRouter);
-app.use("/api/order", OrderRouter);
+app.use("/api/v1/products", ProductRouter);
+app.use("/api/v1/categories", CategoryRouter);
+app.use("/api/v1/auth", AuthRouter);
+app.use("/api/v1/outlets", OutletRouter);
+app.use("/api/v1/orders", OrderRouter);
 
 app.listen(PORT, () => {
   console.log("Server started at http://localhost:5000");

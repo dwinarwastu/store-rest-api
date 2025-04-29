@@ -1,8 +1,6 @@
 import mongoose from "mongoose";
 import { InternalServerError, NotFoundError } from "../../utils/error.js";
-import { paginate } from "../../utils/paginate.js";
 import {
-  countProductRepository,
   createProductRepository,
   getOutletByUser,
   getProductByIdRepository,
@@ -13,21 +11,19 @@ import {
 } from "./product.repository.js";
 
 export const getProductService = async (req) => {
-  const { page, limit } = req.query;
-  const startIndex = (page - 1) * limit;
-  const products = await getProductRepository(startIndex, limit);
-  const total = await countProductRepository();
-
-  if (!products) throw new NotFoundError("Product not found");
-
-  const pagination = await paginate({
-    length: total,
-    limit,
+  const { sort, page, limit } = req.query;
+  const filter = {};
+  const options = {
     page,
-    req,
-  });
+    limit,
+    sort,
+    populate: "categoryId outletId",
+  };
 
-  return { pagination, products };
+  const products = await getProductRepository(filter, options);
+  if (!products) throw new NotFoundError("product not found");
+
+  return products;
 };
 
 export const getProductByIdService = async (req) => {

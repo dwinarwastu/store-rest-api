@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import paginationPlugin from "../plugin/pagination.js";
 
 const orderSchema = new mongoose.Schema({
   orderItemId: [
@@ -31,6 +32,8 @@ const orderSchema = new mongoose.Schema({
     default: Date.now(),
   },
 });
+
+orderSchema.plugin(paginationPlugin);
 
 const Order = mongoose.model("Order", orderSchema);
 

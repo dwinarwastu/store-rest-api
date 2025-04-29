@@ -1,11 +1,7 @@
 import Category from "./category.model.js";
 
-export const getCategoryRepository = async (startIndex, limit) => {
-  return await Category.find({}).skip(startIndex).limit(limit).lean().exec();
-};
-
-export const countCategoryRepository = async () => {
-  return await Category.countDocuments({});
+export const getCategoryRepository = async (filter = {}, options = {}) => {
+  return await Category.paginate(filter, options);
 };
 
 export const getCategoryByIdRepository = async (id) => {

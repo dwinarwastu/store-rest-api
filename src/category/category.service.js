@@ -1,8 +1,6 @@
 import mongoose from "mongoose";
 import { InternalServerError, NotFoundError } from "../../utils/error.js";
-import { paginate } from "../../utils/paginate.js";
 import {
-  countCategoryRepository,
   createCategoryRepository,
   deleteCategoryRepository,
   getCategoryByIdRepository,
@@ -11,21 +9,19 @@ import {
 } from "./category.repository.js";
 
 export const getCategoryService = async (req) => {
-  const { page, limit } = req.query;
-  const startIndex = (page - 1) * limit;
-  const categories = await getCategoryRepository(startIndex, limit);
-  const total = await countCategoryRepository();
-
-  if (!categories) throw new NotFoundError("Category not found");
-
-  const pagination = await paginate({
-    length: total,
-    limit,
+  const { sort, page, limit } = req.query;
+  const filter = {};
+  const options = {
     page,
-    req,
-  });
+    limit,
+    sort,
+    populate: "",
+  };
 
-  return { pagination, categories };
+  const categories = await getCategoryRepository(filter, options);
+  if (!categories) throw new NotFoundError("category not found");
+
+  return categories;
 };
 
 export const getCategoryByIdService = async (req) => {

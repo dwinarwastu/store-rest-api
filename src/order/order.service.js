@@ -21,6 +21,7 @@ import {
   updateOrderRepository,
 } from "./order.repository.js";
 import { paginate } from "../../utils/paginate.js";
+import { populate } from "dotenv";
 
 export const getOrderOutletService = async (req) => {
   const products = await getProductsRepository(req.user.outletId);
@@ -57,7 +58,7 @@ export const createOrderService = async (req) => {
   let total = 0;
 
   for (const orderItem of orderItems) {
-    const product = await findByIdProductRepository(orderItem.products);
+    const product = await findByIdProductRepository(orderItem.product);
     if (!product) throw new NotFoundError("Product not found");
 
     const dataOrderItems = {
@@ -123,21 +124,34 @@ export const deleteOrderService = async (req) => {
 };
 
 export const getOrderService = async (req) => {
-  const { page, limit } = req.query;
-  const startIndex = (page - 1) * limit;
-  const orders = getOrdersRepository(startIndex, limit);
-  const total = countOrderRepository();
-
-  if (!orders) throw new NotFoundError("Orders not found");
-
-  const pagination = await paginate({
-    length: total,
-    limit,
+  const { sort, page, limit } = req.query;
+  const filter = {};
+  const options = {
     page,
-    req,
-  });
+    limit,
+    sort,
+    populate: [
+      {
+        path: "orderItemId",
+        populate: {
+          path: "products",
+          model: "Product",
+          populate: {
+            path: "categoryId",
+            select: "name",
+          },
+        },
+      },
+      {
+        path: "userId",
+        select: "username email",
+      },
+    ],
+  };
 
-  return { pagination, orders };
+  const orders = await getOrdersRepository(filter, options);
+
+  return orders;
 };
 
 export const deleteOrderItemsService = async (req) => {

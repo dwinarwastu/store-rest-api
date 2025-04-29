@@ -3,12 +3,8 @@ import Outlet from "../outlet/outlet.model.js";
 import Product from "./product.model.js";
 import User from "../user/user.model.js";
 
-export const getProductRepository = async (startIndex, limit) => {
-  return await Product.find({}).skip(startIndex).limit(limit).lean().exec();
-};
-
-export const countProductRepository = async () => {
-  return await Product.countDocuments({});
+export const getProductRepository = async (filter = {}, options = {}) => {
+  return await Product.paginate(filter, options);
 };
 
 export const getProductByIdRepository = async (id) => {

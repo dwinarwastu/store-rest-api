@@ -22,7 +22,7 @@ export const updateOutletRepository = async (id, data) => {
 
 export const deleteOutletRepository = async (id) => {
   const outlet = await Outlet.findById(id);
-  return outlet.softDelete()
+  return outlet.softDelete();
   return await Outlet.findByIdAndDelete(id);
 };
 
@@ -34,14 +34,14 @@ export const removeOutletUserRepository = async (id) => {
   );
 };
 
-export const getOutletRepository = async (startIndex, limit) => {
-  return await Outlet.find({}).skip(startIndex).limit(limit).lean().exec();
-};
-
 export const countOutletRepository = async () => {
   return await Outlet.countDocuments();
 };
 
 export const getOutletByIdRepository = async (id) => {
   return await Outlet.findById(id);
+};
+
+export const getOutletRepository = async (filter = {}, options = {}) => {
+  return await Outlet.paginate(filter, options);
 };

@@ -1,8 +1,6 @@
 import mongoose from "mongoose";
 import { InternalServerError, NotFoundError } from "../../utils/error.js";
-import { paginate } from "../../utils/paginate.js";
 import {
-  countOutletRepository,
   deleteOutletRepository,
   findByIdOutletInUserRepository,
   getOutletByIdRepository,
@@ -56,21 +54,19 @@ export const deleteOutlet = async (req) => {
 };
 
 export const getOutletService = async (req) => {
-  const { page, limit } = req.query;
-  const startIndex = (page - 1) * limit;
-  const outlets = await getOutletRepository(startIndex, limit);
-  const total = await countOutletRepository();
-
-  if (!outlets) throw new NotFoundError("Outlet not found");
-
-  const pagination = await paginate({
-    length: total,
-    limit,
+  const { sort, page, limit } = req.query;
+  const filter = {};
+  const options = {
     page,
-    req,
-  });
+    limit,
+    sort,
+    populate: "",
+  };
 
-  return { pagination, outlets };
+  const outlets = await getOutletRepository(filter, options);
+  if (!outlets) throw new NotFoundError("outlet not found");
+
+  return outlets;
 };
 
 export const getOutletByIdService = async (req) => {

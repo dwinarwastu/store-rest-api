@@ -39,12 +39,12 @@ router.put(
 router.delete(
   "/delete-order-item/:id",
   errorHandler(authenticateUser, checkPermission("delete"), deletedOrderItems)
-); //menghapus order item di order
+);
 router.get("/", errorHandler(getOrder));
 router.get("/:id", errorHandler(getOrderById));
 router.put(
   "/add-order-item/:id",
   errorHandler(authenticateUser, checkPermission("create"), addOrderItem)
-); //menambah order item di order
+);
 
 export default router;

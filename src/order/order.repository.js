@@ -72,23 +72,8 @@ export const deleteOrderItemsRepository = async (id) => {
   return await OrderItems.findByIdAndDelete(id);
 };
 
-export const getOrdersRepository = async (startIndex, limit) => {
-  return await Order.find({})
-    .populate("userId", "username")
-    .populate({
-      path: "orderItemId",
-      populate: {
-        path: "products",
-        model: "Product",
-        populate: {
-          path: "categoryId",
-        },
-      },
-    })
-    .skip(startIndex)
-    .limit(limit)
-    .lean()
-    .exac();
+export const getOrdersRepository = async (filter = {}, options = {}) => {
+  return await Order.paginate(filter, options);
 };
 
 export const countOrderRepository = async () => {

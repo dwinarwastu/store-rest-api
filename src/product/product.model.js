@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import softDeletePlugins from "../plugin/softDelete.js";
+import paginationPlugin from "../plugin/pagination.js";
 
 const productSchema = new mongoose.Schema(
   {
@@ -30,7 +31,9 @@ const productSchema = new mongoose.Schema(
   }
 );
 
-productSchema.plugin(softDeletePlugins)
+productSchema.plugin(softDeletePlugins);
+
+productSchema.plugin(paginationPlugin);
 
 const Product = mongoose.model("Product", productSchema);
 
