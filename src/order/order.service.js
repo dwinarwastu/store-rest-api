@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 import { InternalServerError, NotFoundError } from "../../utils/error.js";
 import {
-  countOrderRepository,
   createOrderItemsRepository,
   createOrderRepository,
   deleteOrderItemsRepository,
@@ -20,8 +19,6 @@ import {
   updateStatusOrderRepository,
   updateOrderRepository,
 } from "./order.repository.js";
-import { paginate } from "../../utils/paginate.js";
-import { populate } from "dotenv";
 
 export const getOrderOutletService = async (req) => {
   const products = await getProductsRepository(req.user.outletId);
