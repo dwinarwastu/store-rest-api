@@ -10,7 +10,11 @@ export const createOrderSchema = z.object({
     )
     .min(1, "At least one order item is required"),
   shippingAddress: z.string().min(3).max(100),
-  phone: z.string().min(11).max(14),
+  phone: z
+    .string()
+    .min(11)
+    .max(14)
+    .regex(/^\d+$/, "Phone number must contain only digits"),
   status: z.string().min(3).max(100),
 });
 
@@ -35,5 +39,3 @@ export const addOrderItemsSchema = z.object({
     )
     .min(1, "At least one order item is required"),
 });
-
-
