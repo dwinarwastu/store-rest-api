@@ -1,11 +1,16 @@
 import jwt from "jsonwebtoken";
-import { ForbiddenError, UnauthorizedError } from "./error.js";
+import {
+  BadRequestError,
+  ForbiddenError,
+  InternalServerError,
+  UnauthorizedError,
+} from "./error.js";
 
 export const generateAccessToken = (payload) => {
   try {
     return jwt.sign(payload, process.env.ACCESS_TOKEN, { expiresIn: "1h" });
   } catch (error) {
-    return error;
+    throw new InternalServerError("Failed generate access token");
   }
 };
 
@@ -15,23 +20,20 @@ export const generateRefreshToken = (payload) => {
       expiresIn: "1d",
     });
   } catch (error) {
-    return error;
+    throw new InternalServerError("Failed generate refresh token");
   }
 };
 
 export const decodeToken = (token) => {
-  try {
-    return jwt.decode(token, { complete: true });
-  } catch (error) {
-    return error;
-  }
+  const decode = jwt.decode(token, { complete: true });
+  if (!decode) throw new BadRequestError("Invalid or malformed token");
 };
 
 export const verifyToken = (token, secret) => {
   try {
     return jwt.verify(token, secret);
   } catch (error) {
-    if (error instanceof jwt.JsonWebTokenError)
+    if (error instanceof jwt.TokenExpiredError)
       throw new ForbiddenError("Token expired");
 
     if (error instanceof jwt.JsonWebTokenError)
