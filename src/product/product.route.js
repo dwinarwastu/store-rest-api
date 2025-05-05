@@ -13,9 +13,11 @@ import { errorHandler } from "../../utils/error.js";
 import validate from "../middlewares/validation.middleware.js";
 import {
   createProductSchema,
+  imageProductSchema,
   productIdSchema,
   updateProductSchema,
 } from "./product.schema.js";
+import { upload } from "../middlewares/multer.middleware.js";
 
 const router = express.Router();
 
@@ -28,7 +30,8 @@ router.get(
 );
 router.post(
   "/",
-  validate({ body: createProductSchema }),
+  upload.single("image"),
+  validate({ body: createProductSchema, file: imageProductSchema }),
   errorHandler(authenticateUser, checkPermission("create"), createProduct)
 );
 router.put(

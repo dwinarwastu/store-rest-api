@@ -9,6 +9,7 @@ import {
   updateProductRepository,
   deleteProductRepository,
 } from "./product.repository.js";
+import { uploadsFileToDrive } from "../../utils/googleDrive.js";
 
 export const getProductService = async (req) => {
   const { sort, page, limit } = req.query;
@@ -41,10 +42,13 @@ export const createProductService = async (req) => {
   const outletIds = await getOutletByUser(req.user.userId);
   const { name, price, image, categoryId } = req.body;
 
+  const { fileId } = await uploadsFileToDrive(req.file);
+  const fileUrl = `https://drive.google.com/uc?id=${fileId}`;
+
   const data = {
     name,
     price,
-    image,
+    image: fileUrl,
     categoryId,
     outletId: outletIds.outletId._id,
   };

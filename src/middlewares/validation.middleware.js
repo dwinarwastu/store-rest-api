@@ -1,13 +1,15 @@
-import mongoose from "mongoose";
-import { BadRequestError } from "../../utils/error.js";
-
 const validate =
-  ({ body, query, params }) =>
+  ({ body, file, query, params }) =>
   (req, res, next) => {
     try {
+      console.log(req.body);
+      console.log(req.file);
       if (body) req.body = body.parse(req.body);
+      console.log(req.body);
       if (query) req.query = query.parse(req.query);
       if (params) req.params = params.parse(req.params);
+      if (file) req.file = file.parse(req.file);
+      console.log(req.file);
 
       next();
     } catch (error) {
