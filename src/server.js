@@ -9,6 +9,7 @@ import CategoryRouter from "./category/category.route.js";
 import AuthRouter from "./user/user.route.js";
 import OutletRouter from "./outlet/outlet.route.js";
 import OrderRouter from "./order/order.route.js";
+import rateLimit from "express-rate-limit";
 
 dotenv.config();
 
@@ -17,9 +18,15 @@ connectDatabase();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  message: "Too many requests, please try again after 15 minutes",
+});
+
 app.use(express.json());
 app.use(morgan("dev"));
-
+app.use(limiter);
 app.use(
   morgan("common", {
     stream: fs.createWriteStream("./access.log", { flags: "a" }),
