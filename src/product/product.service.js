@@ -9,7 +9,10 @@ import {
   updateProductRepository,
   deleteProductRepository,
 } from "./product.repository.js";
-import { uploadsFileToDrive } from "../../utils/googleDrive.js";
+import {
+  deleteFileFromDrive,
+  uploadsFileToDrive,
+} from "../../utils/googleDrive.js";
 
 export const getProductService = async (req) => {
   const { sort, page, limit } = req.query;
@@ -40,9 +43,9 @@ export const getProductByIdService = async (req) => {
 
 export const createProductService = async (req) => {
   const outletIds = await getOutletByUser(req.user.userId);
-  const { name, price, image, categoryId } = req.body;
+  const { name, price, categoryId, outletId } = req.body;
 
-  const { fileId } = await uploadsFileToDrive(req.file);
+  const fileId = await uploadsFileToDrive(req.file);
   const fileUrl = `https://drive.google.com/uc?id=${fileId}`;
 
   const data = {
@@ -50,7 +53,7 @@ export const createProductService = async (req) => {
     price,
     image: fileUrl,
     categoryId,
-    outletId: outletIds.outletId._id,
+    outletId: outletIds.outletId?._id || outletId,
   };
 
   const createProduct = await createProductRepository(data);
@@ -61,11 +64,34 @@ export const createProductService = async (req) => {
 
 export const updateProductService = async (req) => {
   const { id } = req.params;
-  const productData = req.body;
+  const { name, price, categoryId, outletId } = req.body;
+  const outletIds = await getOutletByUser(req.user.userId);
 
   if (!mongoose.Types.ObjectId.isValid(id))
     throw new InternalServerError("Invalid id");
 
+  const existingProduct = await getProductByIdRepository(id);
+  if (!existingProduct) throw new NotFoundError("Product not found");
+
+  let fileUrl = existingProduct.image;
+  if (req.file) {
+    const oldFileId = existingProduct.image
+      ? existingProduct.image.split("id=")[1]
+      : null;
+
+    if (oldFileId) await deleteFileFromDrive(oldFileId);
+
+    const fileId = await uploadsFileToDrive(req.file);
+    fileUrl = `https://drive.google.com/uc?id=${fileId}`;
+  }
+
+  const productData = {
+    name,
+    price,
+    image: fileUrl,
+    categoryId,
+    outletId: outletIds.outletId?._id || outletId,
+  };
   const updateProduct = await updateProductRepository(id, productData);
   if (!updateProduct) throw new InternalServerError("Failed update product");
 

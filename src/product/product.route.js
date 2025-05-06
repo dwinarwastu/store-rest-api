@@ -36,7 +36,12 @@ router.post(
 );
 router.put(
   "/:id",
-  validate({ params: productIdSchema, body: updateProductSchema }),
+  upload.single("image"),
+  validate({
+    params: productIdSchema,
+    body: updateProductSchema,
+    file: imageProductSchema,
+  }),
   errorHandler(authenticateUser, checkPermission("update"), updateProduct)
 );
 router.delete(

@@ -20,7 +20,7 @@ export const uploadsFileToDrive = async (file) => {
     body: fs.createReadStream(file.path),
   };
 
-  const response = drive.files.create({
+  const response = await drive.files.create({
     resource: fileMetaData,
     media: media,
     fields: "id",
@@ -33,4 +33,4 @@ export const uploadsFileToDrive = async (file) => {
 export const deleteFileFromDrive = async (fileId) => {
   await drive.files.delete({ fileId });
   console.log(`File ${fileId} deleted from Google Drive`);
-}
+};
