@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { InternalServerError, NotFoundError } from "../../utils/error.js";
+import { InternalServerError, NotFoundError } from "../utils/error.js";
 import {
   createProductRepository,
   getOutletByUser,
@@ -12,7 +12,7 @@ import {
 import {
   deleteFileFromDrive,
   uploadsFileToDrive,
-} from "../../utils/googleDrive.js";
+} from "../utils/googleDrive.js";
 
 export const getProductService = async (req) => {
   const { sort, page, limit } = req.query;

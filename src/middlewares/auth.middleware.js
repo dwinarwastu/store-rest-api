@@ -1,5 +1,5 @@
-import { UnauthorizedError } from "../../utils/error.js";
-import { verifyToken } from "../../utils/jwt.js";
+import { UnauthorizedError } from "../utils/error.js";
+import { verifyToken } from "../utils/jwt.js";
 
 export const authenticateUser = (req, res, next) => {
   const authHeader = req.headers["authorization"];

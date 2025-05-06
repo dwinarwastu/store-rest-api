@@ -15,12 +15,12 @@ import {
   BadRequestError,
   InternalServerError,
   NotFoundError,
-} from "../../utils/error.js";
+} from "../utils/error.js";
 import {
   generateAccessToken,
   generateRefreshToken,
   verifyToken,
-} from "../../utils/jwt.js";
+} from "../utils/jwt.js";
 
 async function getRoleId() {
   let role = await findOneRoleRepository("user");

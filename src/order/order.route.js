@@ -1,5 +1,5 @@
 import express from "express";
-import { errorHandler } from "../../utils/error.js";
+import { errorHandler } from "../utils/error.js";
 import {
   createOrder,
   getOrder,

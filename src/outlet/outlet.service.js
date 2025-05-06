@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { InternalServerError, NotFoundError } from "../../utils/error.js";
+import { InternalServerError, NotFoundError } from "../utils/error.js";
 import {
   deleteOutletRepository,
   findByIdOutletInUserRepository,

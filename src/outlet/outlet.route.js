@@ -6,7 +6,7 @@ import {
   registerOutlet,
   updatedOutlet,
 } from "./outlet.controller.js";
-import { errorHandler } from "../../utils/error.js";
+import { errorHandler } from "../utils/error.js";
 import { authenticateUser } from "../middlewares/auth.middleware.js";
 import { checkPermission } from "../middlewares/role.middleware.js";
 import validate from "../middlewares/validation.middleware.js";

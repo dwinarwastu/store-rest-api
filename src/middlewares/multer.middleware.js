@@ -1,5 +1,5 @@
 import multer from "multer";
-import { formateDate } from "../../utils/formateDate.js";
+import { formateDate } from "../utils/formateDate.js";
 
 const storage = multer.diskStorage({
   destination: "uploads/",

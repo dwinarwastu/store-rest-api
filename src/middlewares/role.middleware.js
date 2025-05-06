@@ -1,7 +1,7 @@
 import User from "../user/user.model.js";
 import Role from "../user/role.model.js";
 import Permission from "../user/permission.model.js";
-import { ForbiddenError, NotFoundError } from "../../utils/error.js";
+import { ForbiddenError, NotFoundError } from "../utils/error.js";
 
 export const checkPermission =
   (...permissions) =>

@@ -9,7 +9,7 @@ import {
 } from "./product.controller.js";
 import { authenticateUser } from "../middlewares/auth.middleware.js";
 import { checkPermission } from "../middlewares/role.middleware.js";
-import { errorHandler } from "../../utils/error.js";
+import { errorHandler } from "../utils/error.js";
 import validate from "../middlewares/validation.middleware.js";
 import {
   createProductSchema,
